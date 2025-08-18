@@ -1,0 +1,11 @@
+name = "dripheads-checkout"
+main = "src/worker.js"
+compatibility_date = "2024-10-01"
+
+[vars]
+# ALLOWED_ORIGINS = "https://yourname.github.io,https://yourcustomdomain.com"
+# PRICE_MAP_JSON = "{\"neon-nights-001\":\"price_123\", \"galaxy-drip-002\":\"price_456\", \"aqua-bolt-003\":\"price_789\", \"electric-rain-004\":\"price_www\"}"
+# SHIPPING_STANDARD_RATE_ID = "shr_standard_123"
+# SHIPPING_EXPRESS_RATE_ID  = "shr_express_456"
+# SHIPPING_STANDARD_AMOUNT  = 800
+# SHIPPING_EXPRESS_AMOUNT   = 1800

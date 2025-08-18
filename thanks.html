@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thanks — DripHeads</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="index.html">
+      <img src="assets/splatter1.svg" alt="logo">
+      <h1>DripHeads</h1>
+    </a>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#hype">Hype</a>
+      <a href="checkout.html">Cart <span class="cart-pill">0</span></a>
+    </div>
+  </div>
+</nav>
+<main class="section">
+  <div class="container">
+    <h2>Order received 🎉</h2>
+    <p>We emailed your receipt and order details. Below is a verified summary.</p>
+  </div>
+  <div class="container" id="order-details" style="margin-top:1rem;"></div>
+</main>
+<footer>
+  <div class="container small">© 2025 DripHeads — One-of-one. Never Restocked.</div>
+</footer>
+<script src="config.js"></script>
+<script src="script.js"></script>
+<script>
+(function(){
+  try { localStorage.removeItem("dripheads_cart_v1"); } catch(e) {}
+  function q(s){ return document.querySelector(s); }
+  function fmtUSD(cents, currency){
+    if(cents == null) return "";
+    const d = (Number(cents)||0)/100;
+    try { return new Intl.NumberFormat('en-US', {style:'currency', currency: (currency||'USD').toUpperCase()}).format(d); }
+    catch(e){ return '$' + d.toFixed(2); }
+  }
+  async function fetchOrderDetails(){
+    const params = new URLSearchParams(window.location.search);
+    const sid = params.get('session_id');
+    const cfg = window.PAY_CONFIG || {};
+    const worker = (cfg.cloudflare && cfg.cloudflare.workerUrl) || "";
+    if(!sid || !worker){ return; }
+    const res = await fetch(worker.replace(/\/$/, '') + "/checkout-session?session_id=" + encodeURIComponent(sid));
+    if(!res.ok){ return; }
+    const data = await res.json();
+    const c = q("#order-details");
+    if(!c) return;
+    const items = (data.line_items || []).map(li => 
+      `<tr><td>${li.description||''}</td><td>${li.quantity||1}</td><td>${fmtUSD(li.amount_total, data.currency)}</td></tr>`
+    ).join("");
+    const itemsTotal = (data.line_items || []).reduce((s,li)=> s + (li.amount_total||0), 0);
+    const shipping = (data.shipping_cost && data.shipping_cost.amount_total) || 0;
+    const tax = Math.max(0, (data.amount_total||0) - itemsTotal - shipping);
+    c.innerHTML = `
+      <div class="card" style="padding:16px;">
+        <h3>Order summary</h3>
+        <p><strong>Status:</strong> ${data.payment_status||data.status||"paid"}</p>
+        <table class="cart-table">
+          <thead><tr><th>Item</th><th>Qty</th><th>Total</th></tr></thead>
+          <tbody>${items}</tbody>
+        </table>
+        <p><strong>Shipping:</strong> ${fmtUSD(shipping, data.currency)}</p>
+        <p><strong>Tax:</strong> ${fmtUSD(tax, data.currency)}</p>
+        <p><strong>Grand Total:</strong> ${fmtUSD(data.amount_total, data.currency)}</p>
+      </div>`;
+  }
+  fetchOrderDetails();
+})();
+</script>
+</body>
+</html>

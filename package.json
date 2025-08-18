@@ -1,0 +1,7 @@
+{
+  "name": "dripheads-checkout",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "devDependencies": { "wrangler": "^3.74.0" }
+}

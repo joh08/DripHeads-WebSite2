@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout — DripHeads</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  
+<nav class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="index.html">
+      <img src="assets/splatter1.svg" alt="logo">
+      <h1>DripHeads</h1>
+    </a>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#hype">Hype</a>
+      <a href="checkout.html">Cart <span class="cart-pill">0</span></a>
+    </div>
+  </div>
+</nav>
+
+  <main class="container checkout">
+    <h2>Checkout</h2>
+    <section class="row">
+      <div>
+        <h3>Contact & Shipping</h3>
+        <label class="small">Full Name</label>
+        <input class="input" placeholder="Alex Smith">
+        <label class="small">Email</label>
+        <input class="input" type="email" placeholder="you@example.com">
+        <label class="small">Address</label>
+        <input class="input" placeholder="123 Field Ln">
+        <div class="row">
+          <div>
+            <label class="small">City</label>
+            <input class="input" placeholder="Lebanon">
+          </div>
+          <div>
+            <label class="small">Postal Code</label>
+            <input class="input" placeholder="45036">
+          </div>
+        </div>
+        <label class="small">Country</label>
+        <select class="input"><option>United States</option></select>
+        <p class="small">Payments are simulated for now. Hook up Stripe later.</p>
+        <button class="btn btn-primary" style="margin-top:8px" onclick="alert('Order captured (demo). Connect Stripe to accept payments.)')">Place Order</button>
+      </div>
+      <div>
+        <h3>Order Summary</h3>
+        <table class="table">
+          <thead><tr><th>Item</th><th>Price</th><th>Qty</th><th>Total</th></tr></thead>
+          <tbody id="cart-body"></tbody>
+        </table>
+        <div class="summary">
+          <div style="display:flex;justify-content:space-between"><span>Subtotal</span><strong id="subtotal">$0.00</strong></div>
+          <p class="small">Shipping calculated at next step.</p>
+        </div>
+      </div>
+    </section>
+  
+  <section class="section">
+    <div class="container">
+      <h3>Order Summary</h3>
+      <table class="cart-table">
+        <thead><tr><th>Item</th><th>Price</th><th>Qty</th><th>Total</th></tr></thead>
+        <tbody id="cart-rows"></tbody>
+        <tfoot><tr><td colspan="3" style="text-align:right"><strong>Subtotal</strong></td><td id="cart-subtotal">$0.00</td></tr></tfoot>
+      </table>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <h3>Checkout</h3>
+      <p>Choose your payment method. Card payments are handled by Stripe (auto-tax & shipping), or use PayPal/Venmo.</p>
+      <div class="pay-options">
+        <button class="btn btn-primary" id="stripe-pay-btn">Pay with Card (Stripe)</button>
+        <div id="paypal-buttons" style="margin-top:16px;"></div>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  var btn = document.getElementById("stripe-pay-btn");
+  if(btn){ btn.addEventListener("click", function(){ openStripeCheckout(); }); }
+});
+</script>
+
+  
+<footer>
+  <div class="container small">© 2025 DripHeads — One-of-one. Never Restocked.</div>
+</footer>
+
+  <img class="splatter mid" src="assets/splatter3.svg" alt="splatter">
+  <script src="script.js"></script>
+  <script>renderCartTable();</script>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
